@@ -1,8 +1,12 @@
 package org.deeplearning4j.kotlin.internal
 
 import org.deeplearning4j.kotlin.layer.IBaseLayerConf
+import org.deeplearning4j.nn.conf.GradientNormalization
 import org.deeplearning4j.nn.conf.layers.BaseLayer
 import org.deeplearning4j.nn.conf.layers.Layer
+import org.deeplearning4j.nn.weights.WeightInit
+import org.nd4j.linalg.activations.Activation
+import org.nd4j.linalg.learning.config.NoOp
 
 internal class BaseLayerConf : IBaseLayerConf {
 	override var activation = initialValues.activation
@@ -17,11 +21,11 @@ internal class BaseLayerConf : IBaseLayerConf {
 
 	override var weightNoise = initialValues.weightNoise
 
-	override var updater = initialValues.updater
+	override var updater = initialValues.updater ?: NoOp()
 
 	override var biasUpdater = initialValues.biasUpdater
 
-	override var gradientNormalization = initialValues.gradientNormalization
+	override var gradientNormalization = initialValues.gradientNormalization ?: GradientNormalization.None
 
 	override var gradientNormalizationThreshold = initialValues.gradientNormalizationThreshold
 
@@ -37,9 +41,9 @@ internal class BaseLayerConf : IBaseLayerConf {
 private val initialValues = BaseLayerBuilderProxy()
 
 private class BaseLayerBuilderProxy : BaseLayer.Builder<BaseLayerBuilderProxy>() {
-	val activation = super.activationFn
+	val activation = super.activationFn ?: Activation.RELU.activationFunction
 
-	val weightInit = super.weightInit
+	val weightInit = super.weightInit ?: WeightInit.XAVIER
 
 	val biasInit = super.biasInit
 

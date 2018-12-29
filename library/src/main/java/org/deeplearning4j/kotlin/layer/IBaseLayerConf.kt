@@ -12,11 +12,11 @@ interface IBaseLayerConf {
 	var activation: IActivation
 	var weightInit: WeightInit
 	var biasInit: Double
-	var dist: Distribution
-	var dropOut: IDropout
-	var weightNoise: IWeightNoise
+	var dist: Distribution?
+	var dropOut: IDropout?
+	var weightNoise: IWeightNoise?
 	var updater: IUpdater
-	var biasUpdater: IUpdater
+	var biasUpdater: IUpdater?
 	var gradientNormalization: GradientNormalization
 	var gradientNormalizationThreshold: Double
 	var l1Weights: Double

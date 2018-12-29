@@ -18,7 +18,7 @@ import org.deeplearning4j.nn.conf.layers.BaseOutputLayer
 import org.deeplearning4j.nn.conf.layers.Layer
 
 class ComputationGraphConf {
-	private var builder = ComputationGraphConfiguration.GraphBuilder(NeuralNetConfiguration.Builder())
+	private val builder = ComputationGraphConfiguration.GraphBuilder(NeuralNetConfiguration.Builder())
 
 	private var defaultConfigBuilder = builder.globalConfiguration
 
@@ -64,7 +64,7 @@ class ComputationGraphConf {
 			builder.validateOutputLayerConfig(value)
 		}
 
-	fun input(): VertexDescriptor = nextVertex().also { builder.addInputs(it) }
+	fun inputVertex(): VertexDescriptor = nextVertex().also { builder.addInputs(it.name) }
 
 	fun defaultConfig(init: NeuralNetConf.() -> Unit) {
 		defaultConfigBuilder = NeuralNetConf().apply(init).builder
@@ -81,6 +81,7 @@ class ComputationGraphConf {
 
 	fun layer(vararg inputs: VertexDescriptor, inputPreProcessor: InputPreProcessor? = null, layer: Layer): VertexDescriptor =
 			vertex(*inputs, graphVertex = LayerVertex(defaultConfigBuilder.clone().layer(layer).build(), inputPreProcessor))
+					.also { layer.layerName = it.name }
 
 	fun denseLayer(vararg inputs: VertexDescriptor, inputPreProcessor: InputPreProcessor? = null, denseLayerConfig: DenseLayerConf.() -> Unit) =
 			layer(*inputs, inputPreProcessor = inputPreProcessor, layer = denseLayer(baseLayerConfig, denseLayerConfig))
@@ -100,22 +101,22 @@ class ComputationGraphConf {
 	fun build(): ComputationGraphConfiguration {
 		vertices.forEach { (descriptor, vertexWithConnection) ->
 			val (inputs, graphVertex) = vertexWithConnection
-			builder.addVertex(descriptor, graphVertex, *(inputs.toTypedArray()))
+			builder.addVertex(descriptor.name, graphVertex, *inputs.names())
+			Unit
 		}
 
-		builder.setOutputs(*outputs.toTypedArray())
+		builder.setOutputs(*outputs.names())
 
-		builder = ComputationGraphConfiguration.GraphBuilder(builder.build(), defaultConfigBuilder)
-
-		return builder.build()
+		return ComputationGraphConfiguration.GraphBuilder(builder.build(), defaultConfigBuilder).build()
 	}
 
-	private fun nextVertex() = "$count".also { count++ }
+	private fun nextVertex() = VertexDescriptor("$count").also { count++ }
+
+	private fun List<VertexDescriptor>.names() = map { it.name }.toTypedArray()
 
 	private data class VertexWithInputs(
-			val inputs: List<String>,
+			val inputs: List<VertexDescriptor>,
 			val vertex: GraphVertex
 	)
 }
 
-typealias VertexDescriptor = String

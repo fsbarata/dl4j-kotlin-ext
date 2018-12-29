@@ -3,12 +3,15 @@ package org.deeplearning4j.kotlin
 import org.deeplearning4j.kotlin.nn.VertexDescriptor
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.WorkspaceMode
-import org.deeplearning4j.nn.conf.graph.GraphVertex
 import org.deeplearning4j.nn.conf.graph.LayerVertex
 import org.deeplearning4j.nn.conf.layers.*
+import org.deeplearning4j.nn.weights.WeightInit
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.nd4j.linalg.activations.Activation
+import org.nd4j.linalg.cpu.nativecpu.NDArray
+import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.lossfunctions.LossFunctions
 
 class NeuralNetworksTest {
@@ -60,6 +63,8 @@ class NeuralNetworksTest {
 			}
 		}
 
+		network.init()
+
 		val layer1 = network.layerWiseConfigurations.confs[0].layer as DenseLayer
 		layer1.assertTestConstants()
 		val layer2 = network.layerWiseConfigurations.confs[1].layer as OutputLayer
@@ -83,7 +88,7 @@ class NeuralNetworksTest {
 				applyTestConstants()
 			}
 
-			val input = input()
+			val input = inputVertex()
 
 			layerOne = denseLayer(input) {
 				nIn = 3
@@ -112,18 +117,20 @@ class NeuralNetworksTest {
 			}
 		}
 
+		network.init()
+
 		assertTrue(network.configuration.defaultConfiguration.isMiniBatch)
 		assertEquals(OPTIMIZATION_ALGORITHM, network.configuration.defaultConfiguration.optimizationAlgo)
 
-		(network.configuration.vertices[layerOne] as LayerVertex).apply {
+		(network.configuration.vertices[layerOne.name] as LayerVertex).apply {
 			(layerConf.layer as BaseLayer).assertTestConstants()
 			assertEquals(3, (layerConf.layer as FeedForwardLayer).nIn)
 		}
-		(network.configuration.vertices[layerTwo] as LayerVertex).apply {
+		(network.configuration.vertices[layerTwo.name] as LayerVertex).apply {
 			(layerConf.layer as BaseLayer).assertTestConstants()
 			assertEquals(6, (layerConf.layer as FeedForwardLayer).nIn)
 		}
-		(network.configuration.vertices[outputLayer] as LayerVertex).apply {
+		(network.configuration.vertices[outputLayer.name] as LayerVertex).apply {
 			(layerConf.layer as BaseLayer).assertTestConstants()
 			assertEquals(2, (layerConf.layer as FeedForwardLayer).nIn)
 			assertEquals(LOSS_FUNCTION, (layerConf.layer as BaseOutputLayer).lossFn)
