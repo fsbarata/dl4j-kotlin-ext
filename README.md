@@ -8,6 +8,7 @@ If you are a kotlin user, you may be struggling with the boilerplate needed to b
 ## Multilayer networks
 
 Networks can be configured by DSL.
+
     val network = multilayerNetwork {
 		defaultConfig {
 			optimizationAlgo = OptimizationAlgorithm.CONJUGATE_GRADIENT
@@ -81,6 +82,7 @@ A computation graph can be configured like this:
 ### Operators
 
 When configuring a graph, a vertex can be added with an operator to combine multiple layers. This will create a subtract ElementWise operation:
+
     graph {
         ...
         val layerOne = denseLayer...
