@@ -17,9 +17,9 @@ Networks can be configured by DSL.
 		}
 
 		baseLayerConfig {
-        	activation = Activation.SOFTMAX.activationFunction
-	        weightInit = WeightInit.XAVIER
-            updater = RmsProp()
+        		activation = Activation.SOFTMAX.activationFunction
+	       		weightInit = WeightInit.XAVIER
+            		updater = RmsProp()
 		}
 
 		denseLayer {
@@ -46,9 +46,9 @@ A computation graph can be configured like this:
 		}
 
 		baseLayerConfig {
-        	activation = Activation.SOFTMAX.activationFunction
-	        weightInit = WeightInit.XAVIER
-            updater = RmsProp()
+        		activation = Activation.SOFTMAX.activationFunction
+	        	weightInit = WeightInit.XAVIER
+           		updater = RmsProp()
 		}
 
 		val input = inputVertex()
