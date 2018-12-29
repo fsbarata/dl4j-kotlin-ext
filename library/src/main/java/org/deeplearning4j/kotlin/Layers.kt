@@ -1,6 +1,7 @@
 package org.deeplearning4j.kotlin
 
 import org.deeplearning4j.kotlin.layer.DenseLayerConf
+import org.deeplearning4j.kotlin.layer.LossLayerConf
 import org.deeplearning4j.kotlin.layer.OutputLayerConf
 
 fun denseLayer(init: DenseLayerConf.() -> Unit) =
@@ -9,3 +10,5 @@ fun denseLayer(init: DenseLayerConf.() -> Unit) =
 fun outputLayer(init: OutputLayerConf.() -> Unit) =
 		OutputLayerConf().apply(init).build()
 
+fun lossLayer(init: LossLayerConf.() -> Unit) =
+		LossLayerConf().apply(init).build()

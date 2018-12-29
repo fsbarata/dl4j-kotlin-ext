@@ -2,9 +2,15 @@ package org.deeplearning4j.kotlin.internal
 
 import org.deeplearning4j.kotlin.layer.IBaseLayerConf
 import org.deeplearning4j.kotlin.layer.IFeedForwardLayerConf
+import org.deeplearning4j.kotlin.layer.ILossLayerConf
 import org.deeplearning4j.nn.conf.layers.BaseLayer
+import org.deeplearning4j.nn.conf.layers.BaseOutputLayer
 import org.deeplearning4j.nn.conf.layers.FeedForwardLayer
 
+
+internal fun <T: BaseOutputLayer.Builder<T>> ILossLayerConf.applyTo(builder: T) {
+	builder.lossFunction(lossFunction)
+}
 
 internal fun <T : FeedForwardLayer.Builder<T>> IFeedForwardLayerConf.applyTo(builder: T) {
 	(this as IBaseLayerConf).applyTo(builder)

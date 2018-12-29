@@ -27,6 +27,26 @@ class LayersTest {
 	}
 
 	@Test
+	fun lossLayer_config_layerHasParameters() {
+		val lossFunction1 = LossFunctions.LossFunction.MEAN_ABSOLUTE_ERROR.iLossFunction
+		val lossFunction2 = LossFunctions.LossFunction.MSE.iLossFunction
+
+		val layer1 = lossLayer {
+			applyTestConstants()
+			lossFunction = lossFunction1
+		}
+		val layer2 = lossLayer {
+			applyTestConstants()
+			lossFunction = lossFunction2
+		}
+
+		(layer1 as BaseLayer).assertTestConstants()
+		assertEquals(lossFunction1, layer1.lossFn)
+		(layer2 as BaseLayer).assertTestConstants()
+		assertEquals(lossFunction2, layer2.lossFn)
+	}
+
+	@Test
 	fun outputLayer_config_layerHasParameters() {
 		val lossFunction1 = LossFunctions.LossFunction.MEAN_ABSOLUTE_ERROR.iLossFunction
 		val lossFunction2 = LossFunctions.LossFunction.MSE.iLossFunction
@@ -60,5 +80,10 @@ class LayersTest {
 		(this as BaseLayer).assertTestConstants()
 		assertEquals(INPUT_NODES.toLong(), nIn)
 		assertEquals(OUTPUT_NODES.toLong(), nOut)
+	}
+
+	companion object {
+		const val INPUT_NODES = 4
+		const val OUTPUT_NODES = 5
 	}
 }

@@ -29,9 +29,6 @@ val L1_BIAS = 2.0
 val L2_WEIGHT = 3.0
 val L2_BIAS = 4.0
 
-const val INPUT_NODES = 4
-const val OUTPUT_NODES = 5
-
 fun IBaseLayerConf.applyTestConstants() {
 	activation = ACTIVATION
 	weightInit = WEIGHT_INIT
