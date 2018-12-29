@@ -1,0 +1,14 @@
+apply plugin: 'kotlin'
+
+sourceCompatibility = "1.6"
+targetCompatibility = "1.6"
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
+
+    implementation "org.nd4j:nd4j-native-platform:$DL4J_VERSION"
+    implementation "org.deeplearning4j:deeplearning4j-core:$DL4J_VERSION"
+
+    testImplementation "junit:junit:$JUNIT_VERSION"
+}
