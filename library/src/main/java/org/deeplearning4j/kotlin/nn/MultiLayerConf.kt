@@ -1,10 +1,13 @@
 package org.deeplearning4j.kotlin.nn
 
+import org.deeplearning4j.kotlin.denseLayer
 import org.deeplearning4j.kotlin.internal.BaseLayerConf
-import org.deeplearning4j.kotlin.internal.copyTo
 import org.deeplearning4j.kotlin.layer.DenseLayerConf
 import org.deeplearning4j.kotlin.layer.IBaseLayerConf
+import org.deeplearning4j.kotlin.layer.LossLayerConf
 import org.deeplearning4j.kotlin.layer.OutputLayerConf
+import org.deeplearning4j.kotlin.lossLayer
+import org.deeplearning4j.kotlin.outputLayer
 import org.deeplearning4j.nn.conf.InputPreProcessor
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration
@@ -16,10 +19,14 @@ class MultiLayerConf {
 
 	private var defaultConfigBuilder = NeuralNetConfiguration.Builder()
 
+	private var baseLayerConfig: IBaseLayerConf? = null
+
 	private var inputPreProcessors = emptyMap<Int, InputPreProcessor>()
 	private var layers = emptyList<Layer>()
 
-	private var baseLayerConfig: IBaseLayerConf? = null
+	fun defaultConfig(init: NeuralNetConf.() -> Unit) {
+		defaultConfigBuilder = NeuralNetConf().apply(init).builder
+	}
 
 	var backpropType
 		get() = builder.backpropType
@@ -59,27 +66,18 @@ class MultiLayerConf {
 			builder.legacyBatchScaledL2(value)
 		}
 
-	fun defaultConfig(init: NeuralNetConf.() -> Unit) {
-		defaultConfigBuilder = NeuralNetConf().apply(init).builder
-	}
-
 	fun baseLayerConfig(init: IBaseLayerConf.() -> Unit) {
 		baseLayerConfig = BaseLayerConf().apply(init)
 	}
 
 	fun denseLayer(init: DenseLayerConf.() -> Unit) =
-			DenseLayerConf()
-					.also { baseLayerConfig?.copyTo(it) }
-					.apply(init)
-					.build()
-					.also { layer(it) }
+			layer(denseLayer(baseLayerConfig, init))
 
 	fun outputLayer(init: OutputLayerConf.() -> Unit) =
-			OutputLayerConf()
-					.also { baseLayerConfig?.copyTo(it) }
-					.apply(init)
-					.build()
-					.also { layer(it) }
+			layer(outputLayer(baseLayerConfig, init))
+
+	fun lossLayer(init: LossLayerConf.() -> Unit) =
+			layer(lossLayer(baseLayerConfig, init))
 
 	fun layer(layer: Layer, inputPreProcessor: InputPreProcessor? = null) {
 		if (inputPreProcessor != null) inputPreProcessors += layers.size to inputPreProcessor

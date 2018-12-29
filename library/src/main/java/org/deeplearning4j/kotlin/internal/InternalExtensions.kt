@@ -8,7 +8,7 @@ import org.deeplearning4j.nn.conf.layers.BaseOutputLayer
 import org.deeplearning4j.nn.conf.layers.FeedForwardLayer
 
 
-internal fun <T: BaseOutputLayer.Builder<T>> ILossLayerConf.applyTo(builder: T) {
+internal fun <T : BaseOutputLayer.Builder<T>> ILossLayerConf.applyTo(builder: T) {
 	builder.lossFunction(lossFunction)
 }
 
@@ -51,5 +51,3 @@ internal fun IBaseLayerConf.copyTo(baseLayerConf: IBaseLayerConf) {
 	baseLayerConf.l2Weights = l2Weights
 	baseLayerConf.l2Bias = l2Bias
 }
-
-
