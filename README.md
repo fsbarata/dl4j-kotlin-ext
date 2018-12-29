@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/fsbarata/dl4j-kotlin-ext.svg)](https://jitpack.io/#fsbarata/dl4j-kotlin-ext)
+
 # dl4j-kotlin-ext
 dl4j-kotlin-ext is an unofficial kotlin DSL and extension methods library for writing Neural networks with [`DeepLearning4j`](https://github.com/deeplearning4j/deeplearning4j)
 
