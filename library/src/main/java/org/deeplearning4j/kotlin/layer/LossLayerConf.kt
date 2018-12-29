@@ -11,5 +11,5 @@ class LossLayerConf : ILossLayerConf by BaseLossLayerConf(), IBaseLayerConf by B
 	fun build() = builder.also {
 		(this as IBaseLayerConf).applyTo(builder)
 		(this as ILossLayerConf).applyTo(builder)
-	}.build()
+	}.build().also { it.layerName = name }
 }

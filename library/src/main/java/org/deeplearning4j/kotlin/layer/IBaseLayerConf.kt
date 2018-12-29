@@ -9,6 +9,7 @@ import org.nd4j.linalg.activations.IActivation
 import org.nd4j.linalg.learning.config.IUpdater
 
 interface IBaseLayerConf {
+	var name: String?
 	var activation: IActivation
 	var weightInit: WeightInit
 	var biasInit: Double

@@ -19,6 +19,7 @@ import org.deeplearning4j.nn.conf.graph.MergeVertex
 import org.deeplearning4j.nn.conf.layers.BaseOutputLayer
 import org.deeplearning4j.nn.conf.layers.Layer
 import org.deeplearning4j.nn.layers.util.IdentityLayer
+import java.util.*
 
 class ComputationGraphConf {
 	private val builder = ComputationGraphConfiguration.GraphBuilder(NeuralNetConfiguration.Builder())
@@ -26,8 +27,6 @@ class ComputationGraphConf {
 	private var defaultConfigBuilder = builder.globalConfiguration
 
 	private var baseLayerConfig: IBaseLayerConf? = null
-
-	private var count: Int = 0
 
 	private var vertices = emptyMap<VertexDescriptor, VertexWithInputs>()
 	private var outputs = emptyList<VertexDescriptor>()
@@ -67,7 +66,7 @@ class ComputationGraphConf {
 			builder.validateOutputLayerConfig(value)
 		}
 
-	fun inputVertex(): VertexDescriptor = nextVertex().also { builder.addInputs(it.name) }
+	fun inputVertex(name: String? = null): VertexDescriptor = VertexDescriptor(name.orRandomName()).also { builder.addInputs(it.name) }
 
 	fun defaultConfig(init: NeuralNetConf.() -> Unit) {
 		defaultConfigBuilder = NeuralNetConf().apply(init).builder
@@ -77,13 +76,13 @@ class ComputationGraphConf {
 		baseLayerConfig = BaseLayerConf().apply(init)
 	}
 
-	fun vertex(vararg inputs: VertexDescriptor, graphVertex: GraphVertex): VertexDescriptor =
-			nextVertex().also { vertex ->
+	fun vertex(vararg inputs: VertexDescriptor, name: String? = null, graphVertex: GraphVertex): VertexDescriptor =
+			VertexDescriptor(name.orRandomName()).also { vertex ->
 				vertices += vertex to VertexWithInputs(inputs.toList(), graphVertex)
 			}
 
 	fun layer(vararg inputs: VertexDescriptor, inputPreProcessor: InputPreProcessor? = null, layer: Layer): VertexDescriptor =
-			vertex(*inputs, graphVertex = LayerVertex(defaultConfigBuilder.clone().layer(layer).build(), inputPreProcessor))
+			vertex(*inputs, name = layer.layerName, graphVertex = LayerVertex(defaultConfigBuilder.clone().layer(layer).build(), inputPreProcessor))
 					.also { layer.layerName = it.name }
 
 	fun denseLayer(vararg inputs: VertexDescriptor, inputPreProcessor: InputPreProcessor? = null, denseLayerConfig: DenseLayerConf.() -> Unit) =
@@ -112,8 +111,10 @@ class ComputationGraphConf {
 
 	fun average(vararg vertices: VertexDescriptor) =
 			vertex(*vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Average))
+
 	fun max(vararg vertices: VertexDescriptor) =
 			vertex(*vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Max))
+
 	fun concat(vararg vertices: VertexDescriptor) =
 			vertex(*vertices, graphVertex = MergeVertex())
 
@@ -132,7 +133,7 @@ class ComputationGraphConf {
 		return ComputationGraphConfiguration.GraphBuilder(builder.build(), defaultConfigBuilder).build()
 	}
 
-	private fun nextVertex() = VertexDescriptor("$count").also { count++ }
+	private fun String?.orRandomName() = this ?: UUID.randomUUID().toString()
 
 	private fun List<VertexDescriptor>.names() = map { it.name }.toTypedArray()
 

@@ -9,6 +9,8 @@ import org.nd4j.linalg.activations.Activation
 import org.nd4j.linalg.learning.config.NoOp
 
 internal class BaseLayerConf : IBaseLayerConf {
+	override var name: String? = null
+
 	override var activation = initialValues.activation
 
 	override var weightInit = initialValues.weightInit

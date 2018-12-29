@@ -20,5 +20,5 @@ class OutputLayerConf : IFeedForwardLayerConf by FeedForwardConf(), ILossLayerCo
 		(this as IBaseLayerConf).applyTo(builder)
 		(this as IFeedForwardLayerConf).applyTo(builder)
 		(this as ILossLayerConf).applyTo(builder)
-	}.build()
+	}.build().also { it.layerName = name }
 }

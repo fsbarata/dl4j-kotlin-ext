@@ -18,5 +18,5 @@ class DenseLayerConf : IFeedForwardLayerConf by FeedForwardConf(), IBaseLayerCon
 	fun build() = builder.also {
 		(this as IBaseLayerConf).applyTo(builder)
 		(this as IFeedForwardLayerConf).applyTo(builder)
-	}.build()
+	}.build().also { it.layerName = name }
 }

@@ -90,6 +90,7 @@ class NeuralNetworksTest {
 			val input = inputVertex()
 
 			layerOne = denseLayer(input) {
+				name = "1"
 				nIn = 3
 				nOut = 5
 			}
@@ -124,6 +125,7 @@ class NeuralNetworksTest {
 		(network.configuration.vertices[layerOne.name] as LayerVertex).apply {
 			(layerConf.layer as BaseLayer).assertTestConstants()
 			assertEquals(3, (layerConf.layer as FeedForwardLayer).nIn)
+			assertEquals("1", layerConf.layer.layerName)
 		}
 		(network.configuration.vertices[layerTwo.name] as LayerVertex).apply {
 			(layerConf.layer as BaseLayer).assertTestConstants()

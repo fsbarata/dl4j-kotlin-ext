@@ -35,6 +35,7 @@ internal fun <T : BaseLayer.Builder<T>> IBaseLayerConf.applyTo(builder: T) {
 }
 
 internal fun IBaseLayerConf.copyTo(baseLayerConf: IBaseLayerConf) {
+	baseLayerConf.name = name
 	baseLayerConf.activation = activation
 	baseLayerConf.weightInit = weightInit
 	baseLayerConf.biasInit = biasInit
