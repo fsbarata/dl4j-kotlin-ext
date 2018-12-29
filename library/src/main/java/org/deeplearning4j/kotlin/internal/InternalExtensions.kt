@@ -13,7 +13,6 @@ internal fun <T : BaseOutputLayer.Builder<T>> ILossLayerConf.applyTo(builder: T)
 }
 
 internal fun <T : FeedForwardLayer.Builder<T>> IFeedForwardLayerConf.applyTo(builder: T) {
-	(this as IBaseLayerConf).applyTo(builder)
 	builder.nIn(nIn)
 	builder.nOut(nOut)
 }
