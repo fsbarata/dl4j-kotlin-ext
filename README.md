@@ -17,9 +17,9 @@ Networks can be configured by DSL.
 		}
 
 		baseLayerConfig {
-        		activation = Activation.SOFTMAX.activationFunction
-	       		weightInit = WeightInit.XAVIER
-            		updater = RmsProp()
+			activation = Activation.SOFTMAX.activationFunction
+			weightInit = WeightInit.XAVIER
+			updater = RmsProp()
 		}
 
 		denseLayer {
@@ -95,9 +95,9 @@ When configuring a graph, a vertex can be added with an operator to combine mult
     }
 
 #### Available Operations
-- plus (+) <=> Op.Add
-- minus (-) <=> Op.Subtract
-- times (*) <=> Op.Product
+- operator plus + <=> Op.Add
+- operator minus - <=> Op.Subtract
+- operator times * <=> Op.Product
 - average(input1,...) <=> Op.Average
 - max(input1,...) <=> Op.Max
 - concat(input1,...) <=> MergeVertex
