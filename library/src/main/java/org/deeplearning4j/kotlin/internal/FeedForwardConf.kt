@@ -6,8 +6,9 @@ import org.deeplearning4j.nn.conf.layers.FeedForwardLayer
 import org.deeplearning4j.nn.conf.layers.Layer
 
 
-internal class FeedForwardConf : IBaseLayerConf by BaseLayerConf(), IFeedForwardLayerConf {
+internal class FeedForwardConf : IFeedForwardLayerConf {
 	override var nIn: Int = initialValues.nIn
+
 	override var nOut: Int = initialValues.nOut
 }
 
