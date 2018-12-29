@@ -121,3 +121,6 @@ Layers can also be configured standalone by DSL.
 - outputLayer
 - lossLayer
 - WIP
+
+## INDArray operators
+WIP
