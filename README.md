@@ -1,9 +1,12 @@
 # dl4j-kotlin-ext
-dl4j kotlin extension is a DSL and extension methods library for writing Neural networks with [`DeepLearning4J`](https://github.com/deeplearning4j/deeplearning4j)
+dl4j-kotlin-ext is a kotlin DSL and extension methods library for writing Neural networks with [`DeepLearning4J`](https://github.com/deeplearning4j/deeplearning4j)
+
+## Motivation
+If you are a kotlin user, you may be struggling with the boilerplate needed to build networks and layers and may not always understand what fits together. In this library you will find a richer way of dealing with layers, multilayer networks and computation graphs.
 
 ## Layers
 
-Layers can be configurated by c DSL
+Layers can be configurated by DSL. Here's an example of a DenseLayer:
 
     val layer = denseLayer {
         activation = Activation.SOFTMAX.activationFunction
