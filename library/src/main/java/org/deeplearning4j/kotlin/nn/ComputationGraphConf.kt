@@ -12,10 +12,13 @@ import org.deeplearning4j.nn.conf.BackpropType
 import org.deeplearning4j.nn.conf.ComputationGraphConfiguration
 import org.deeplearning4j.nn.conf.InputPreProcessor
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration
+import org.deeplearning4j.nn.conf.graph.ElementWiseVertex
 import org.deeplearning4j.nn.conf.graph.GraphVertex
 import org.deeplearning4j.nn.conf.graph.LayerVertex
+import org.deeplearning4j.nn.conf.graph.MergeVertex
 import org.deeplearning4j.nn.conf.layers.BaseOutputLayer
 import org.deeplearning4j.nn.conf.layers.Layer
+import org.deeplearning4j.nn.layers.util.IdentityLayer
 
 class ComputationGraphConf {
 	private val builder = ComputationGraphConfiguration.GraphBuilder(NeuralNetConfiguration.Builder())
@@ -98,6 +101,25 @@ class ComputationGraphConf {
 			output(*inputs, inputPreProcessor = inputPreProcessor, outputLayer = outputLayer(baseLayerConfig, ouputLayerConfig))
 
 
+	operator fun VertexDescriptor.plus(other: VertexDescriptor) =
+			vertex(this, other.duplicateIfEqualTo(this), graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Add))
+
+	operator fun VertexDescriptor.minus(other: VertexDescriptor) =
+			vertex(this, other.duplicateIfEqualTo(this), graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Subtract))
+
+	operator fun VertexDescriptor.times(other: VertexDescriptor) =
+			vertex(this, other.duplicateIfEqualTo(this), graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Product))
+
+	fun average(vararg vertices: VertexDescriptor) =
+			vertex(*vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Average))
+	fun max(vararg vertices: VertexDescriptor) =
+			vertex(*vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Max))
+	fun concat(vararg vertices: VertexDescriptor) =
+			vertex(*vertices, graphVertex = MergeVertex())
+
+	fun VertexDescriptor.duplicate() =
+			layer(this, layer = IdentityLayer())
+
 	fun build(): ComputationGraphConfiguration {
 		vertices.forEach { (descriptor, vertexWithConnection) ->
 			val (inputs, graphVertex) = vertexWithConnection
@@ -118,5 +140,8 @@ class ComputationGraphConf {
 			val inputs: List<VertexDescriptor>,
 			val vertex: GraphVertex
 	)
-}
 
+	private fun VertexDescriptor.duplicateIfEqualTo(other: VertexDescriptor) =
+			if (this == other) duplicate().also { println("Warning: Operation uses same vertex, duplicating") }
+			else this
+}
