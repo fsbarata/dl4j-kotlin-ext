@@ -1,5 +1,9 @@
 package org.deeplearning4j.kotlin
 
+import org.deeplearning4j.kotlin.layer.IBaseLayerConf
+import org.deeplearning4j.kotlin.layer.IFeedForwardLayerConf
+import org.deeplearning4j.nn.conf.layers.BaseLayer
+import org.deeplearning4j.nn.conf.layers.FeedForwardLayer
 import org.junit.Assert.*
 import org.junit.Test
 import org.nd4j.linalg.lossfunctions.LossFunctions
@@ -44,5 +48,17 @@ class LayersTest {
 		layer2.assertTestConstants()
 		assertFalse(layer2.isHasBias)
 		assertEquals(lossFunction2, layer2.lossFn)
+	}
+
+	private fun IFeedForwardLayerConf.applyTestConstants() {
+		(this as IBaseLayerConf).applyTestConstants()
+		nIn = INPUT_NODES
+		nOut = OUTPUT_NODES
+	}
+
+	private fun <T : FeedForwardLayer> T.assertTestConstants() {
+		(this as BaseLayer).assertTestConstants()
+		assertEquals(INPUT_NODES.toLong(), nIn)
+		assertEquals(OUTPUT_NODES.toLong(), nOut)
 	}
 }

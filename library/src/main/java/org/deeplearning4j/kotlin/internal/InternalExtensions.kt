@@ -29,4 +29,21 @@ internal fun <T : BaseLayer.Builder<T>> IBaseLayerConf.applyTo(builder: T) {
 	builder.l2Bias(l2Bias)
 }
 
+internal fun IBaseLayerConf.copyTo(baseLayerConf: IBaseLayerConf) {
+	baseLayerConf.activation = activation
+	baseLayerConf.weightInit = weightInit
+	baseLayerConf.biasInit = biasInit
+	baseLayerConf.dist = dist
+	baseLayerConf.dropOut = dropOut
+	baseLayerConf.weightNoise = weightNoise
+	baseLayerConf.updater = updater
+	baseLayerConf.biasUpdater = biasUpdater
+	baseLayerConf.gradientNormalization = gradientNormalization
+	baseLayerConf.gradientNormalizationThreshold = gradientNormalizationThreshold
+	baseLayerConf.l1Weights = l1Weights
+	baseLayerConf.l1Bias = l1Bias
+	baseLayerConf.l2Weights = l2Weights
+	baseLayerConf.l2Bias = l2Bias
+}
+
 

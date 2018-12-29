@@ -6,7 +6,7 @@ import org.deeplearning4j.nn.conf.layers.OutputLayer
 import org.nd4j.linalg.lossfunctions.ILossFunction
 
 class OutputLayerConf : IFeedForwardLayerConf by FeedForwardConf() {
-	internal val builder: OutputLayer.Builder = OutputLayer.Builder()
+	private val builder: OutputLayer.Builder = OutputLayer.Builder()
 
 	var hasBias: Boolean
 		@Deprecated("No getter", level = DeprecationLevel.ERROR) get() = throw NoSuchFieldError()

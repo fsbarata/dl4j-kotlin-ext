@@ -66,16 +66,4 @@ fun <T : BaseLayer> T.assertTestConstants() {
 	assertEquals(L2_BIAS, l2Bias, 1e-8)
 }
 
-fun IFeedForwardLayerConf.applyTestConstants() {
-	(this as IBaseLayerConf).applyTestConstants()
-	nIn = INPUT_NODES
-	nOut = OUTPUT_NODES
-}
-
-fun <T : FeedForwardLayer> T.assertTestConstants() {
-	(this as BaseLayer).assertTestConstants()
-	assertEquals(INPUT_NODES.toLong(), nIn)
-	assertEquals(OUTPUT_NODES.toLong(), nOut)
-}
-
 

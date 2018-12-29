@@ -4,34 +4,66 @@ import org.deeplearning4j.kotlin.layer.IBaseLayerConf
 import org.deeplearning4j.nn.conf.layers.BaseLayer
 import org.deeplearning4j.nn.conf.layers.Layer
 
-internal class BaseLayerConf : BaseLayer.Builder<BaseLayerConf>(), IBaseLayerConf {
-	override var activation = super.activationFn
+internal class BaseLayerConf : IBaseLayerConf {
+	override var activation = initialValues.activation
 
-	override var weightInit = super.weightInit
+	override var weightInit = initialValues.weightInit
 
-	override var biasInit = super.biasInit
+	override var biasInit = initialValues.biasInit
 
-	override var dist = super.dist
+	override var dist = initialValues.dist
 
-	override var dropOut = super.iDropout
+	override var dropOut = initialValues.dropOut
 
-	override var weightNoise = super.weightNoise
+	override var weightNoise = initialValues.weightNoise
 
-	override var updater = super.iupdater
+	override var updater = initialValues.updater
 
-	override var biasUpdater = super.biasUpdater
+	override var biasUpdater = initialValues.biasUpdater
 
-	override var gradientNormalization = super.gradientNormalization
+	override var gradientNormalization = initialValues.gradientNormalization
 
-	override var gradientNormalizationThreshold = super.gradientNormalizationThreshold
+	override var gradientNormalizationThreshold = initialValues.gradientNormalizationThreshold
 
-	override var l1Weights = super.l1
+	override var l1Weights = initialValues.l1Weights
 
-	override var l1Bias = super.l1Bias
+	override var l1Bias = initialValues.l1Bias
 
-	override var l2Weights = super.l2
+	override var l2Weights = initialValues.l2Weights
 
-	override var l2Bias = super.l2Bias
+	override var l2Bias = initialValues.l2Bias
+}
+
+private val initialValues = BaseLayerBuilderProxy()
+
+private class BaseLayerBuilderProxy : BaseLayer.Builder<BaseLayerBuilderProxy>() {
+	val activation = super.activationFn
+
+	val weightInit = super.weightInit
+
+	val biasInit = super.biasInit
+
+	val dist = super.dist
+
+	val dropOut = super.iDropout
+
+	val weightNoise = super.weightNoise
+
+	val updater = super.iupdater
+
+	val biasUpdater = super.biasUpdater
+
+	val gradientNormalization = super.gradientNormalization
+
+	val gradientNormalizationThreshold = super.gradientNormalizationThreshold
+
+	val l1Weights = super.l1
+
+	val l1Bias = super.l1Bias
+
+	val l2Weights = super.l2
+
+	val l2Bias = super.l2Bias
 
 	override fun <E : Layer?> build(): E {
 		throw NotImplementedError()

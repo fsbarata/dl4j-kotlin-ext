@@ -6,10 +6,16 @@ import org.deeplearning4j.nn.conf.layers.FeedForwardLayer
 import org.deeplearning4j.nn.conf.layers.Layer
 
 
-internal class FeedForwardConf
-	: FeedForwardLayer.Builder<FeedForwardConf>(), IBaseLayerConf by BaseLayerConf(), IFeedForwardLayerConf {
-	override var nIn: Int = super.nIn
-	override var nOut: Int = super.nOut
+internal class FeedForwardConf : IBaseLayerConf by BaseLayerConf(), IFeedForwardLayerConf {
+	override var nIn: Int = initialValues.nIn
+	override var nOut: Int = initialValues.nOut
+}
+
+private val initialValues = FeedForwardLayerBuilderProxy()
+
+private class FeedForwardLayerBuilderProxy : FeedForwardLayer.Builder<FeedForwardLayerBuilderProxy>() {
+	val nIn = super.nIn
+	val nOut = super.nOut
 
 	override fun <E : Layer?> build(): E {
 		throw NotImplementedError()
