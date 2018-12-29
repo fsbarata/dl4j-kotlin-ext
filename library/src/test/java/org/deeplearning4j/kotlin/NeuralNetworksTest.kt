@@ -140,52 +140,6 @@ class NeuralNetworksTest {
 		assertEquals(2, network.configuration.networkOutputs.size)
 	}
 
-	@Test
-	fun graph_plus() {
-		lateinit var layerThree: VertexDescriptor
-
-		val network = graph {
-			defaultConfig {
-				optimizationAlgo = OPTIMIZATION_ALGORITHM
-			}
-
-			baseLayerConfig {
-				activation = Activation.IDENTITY.activationFunction
-				dist = DIST
-			}
-
-			val input = inputVertex()
-			val input2 = inputVertex()
-
-			val layerOne = denseLayer(input) {
-				weightInit = WeightInit.IDENTITY
-				nIn = 3
-				nOut = 3
-			}
-
-			val layerTwo = denseLayer(input2) {
-				weightInit = WeightInit.ONES
-				nIn = 2
-				nOut = 3
-			}
-
-			layerThree = layerOne + layerTwo
-
-			lossLayer(layerThree) {
-				lossFunction = LOSS_FUNCTION
-			}
-		}
-
-		network.init()
-
-		val input1 = Nd4j.ones(3)
-		val input2 = Nd4j.ones(2)
-		val output = network.outputSingle(input1, input2)
-
-		val outputDoubles = output.toDoubleVector().toList()
-		assertEquals(listOf(3.0, 3.0, 3.0), outputDoubles)
-	}
-
 	companion object {
 		val OPTIMIZATION_ALGORITHM = OptimizationAlgorithm.CONJUGATE_GRADIENT
 		val LOSS_FUNCTION = LossFunctions.LossFunction.MSE.iLossFunction
