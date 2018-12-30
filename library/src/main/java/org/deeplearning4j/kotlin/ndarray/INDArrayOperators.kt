@@ -78,11 +78,24 @@ operator fun INDArray.set(indices: INDArray, element: INDArray) {
 	put(indices, element)
 }
 
+@Deprecated("Unable to use long indices, converting to Int")
+operator fun INDArray.set(vararg indices: Long, scalar: INDArray) {
+	put(indices.toIntArray(), scalar)
+}
+
 operator fun INDArray.set(vararg indices: Int, scalar: INDArray) {
 	put(indices, scalar)
 }
 
+operator fun INDArray.set(vararg indices: Long, scalar: Double) {
+	putScalar(indices, scalar)
+}
+
 operator fun INDArray.set(vararg indices: Int, scalar: Double) {
+	putScalar(indices, scalar)
+}
+
+operator fun INDArray.set(vararg indices: Long, scalar: Float) {
 	putScalar(indices, scalar)
 }
 
@@ -90,3 +103,6 @@ operator fun INDArray.set(vararg indices: Int, scalar: Float) {
 	putScalar(indices, scalar)
 }
 
+
+@Deprecated("Loss of resolution")
+private fun LongArray.toIntArray() = IntArray(size) { this[it].toInt() }
