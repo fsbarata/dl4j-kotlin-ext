@@ -5,12 +5,9 @@ import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.WorkspaceMode
 import org.deeplearning4j.nn.conf.graph.LayerVertex
 import org.deeplearning4j.nn.conf.layers.*
-import org.deeplearning4j.nn.weights.WeightInit
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.nd4j.linalg.activations.Activation
-import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.lossfunctions.LossFunctions
 
 class NeuralNetworksTest {
