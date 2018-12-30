@@ -1,6 +1,7 @@
 package org.deeplearning4j.kotlin.nn
 
 import org.deeplearning4j.kotlin.DIST
+import org.deeplearning4j.kotlin.assertEquals
 import org.deeplearning4j.kotlin.graph
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.graph.ComputationGraph
@@ -27,6 +28,32 @@ class ComputationGraphVertexOperationsTest {
 	fun graph_minus() {
 		buildGraphWithIdentityAndOnesLayers { identityLayer, onesLayers ->
 			identityLayer - onesLayers
+		}.assertOutput(
+				expectedOutput = doubleArrayOf(0.0, -2.0, -2.0),
+				input1 = doubleArrayOf(2.0, 0.0, 0.0),
+				input2 = doubleArrayOf(1.0, 1.0)
+		)
+	}
+
+	@Test
+	fun graph_minus_oneElement() {
+		buildComputationGraph {
+			val input = inputVertex()
+			val input2 = inputVertex()
+
+			val layerOne = denseLayer(input) {
+				weightInit = WeightInit.IDENTITY
+				nIn = 3
+				nOut = 3
+			}
+
+			val layerTwo = denseLayer(input2) {
+				weightInit = WeightInit.ONES
+				nIn = 2
+				nOut = 1
+			}
+
+			layerOne - layerTwo
 		}.assertOutput(
 				expectedOutput = doubleArrayOf(0.0, -2.0, -2.0),
 				input1 = doubleArrayOf(2.0, 0.0, 0.0),
@@ -118,7 +145,7 @@ class ComputationGraphVertexOperationsTest {
 				}
 
 		private fun ComputationGraph.assertOutput(expectedOutput: DoubleArray, input1: DoubleArray, input2: DoubleArray) {
-			assertEquals(expectedOutput.toList(), outputSingle(Nd4j.create(input1), Nd4j.create(input2)).toDoubleVector().toList())
+			outputSingle(Nd4j.create(input1), Nd4j.create(input2)).assertEquals(expectedOutput)
 		}
 	}
 }
