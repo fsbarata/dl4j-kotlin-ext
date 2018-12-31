@@ -112,23 +112,23 @@ class ComputationGraphConf {
 	operator fun VertexDescriptor.times(other: VertexDescriptor) =
 			vertex(this, other.duplicateIfEqualTo(this), graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Product))
 
-	fun average(vararg vertices: VertexDescriptor) =
-			average(vertices.toList())
+	fun average(vararg vertices: VertexDescriptor, name: String? = null) =
+			average(vertices.toList(), name)
 
-	fun average(vertices: List<VertexDescriptor>) =
-			vertex(vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Average))
+	fun average(vertices: List<VertexDescriptor>, name: String? = null) =
+			vertex(vertices, name, ElementWiseVertex(ElementWiseVertex.Op.Average))
 
-	fun max(vararg vertices: VertexDescriptor) =
-			max(vertices.toList())
+	fun max(vararg vertices: VertexDescriptor, name: String? = null) =
+			max(vertices.toList(), name)
 
-	fun max(vertices: List<VertexDescriptor>) =
-			vertex(vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Max))
+	fun max(vertices: List<VertexDescriptor>, name: String? = null) =
+			vertex(vertices, name, ElementWiseVertex(ElementWiseVertex.Op.Max))
 
-	fun concat(vararg vertices: VertexDescriptor) =
-			concat(vertices.toList())
+	fun concat(vararg vertices: VertexDescriptor, name: String? = null) =
+			concat(vertices.toList(), name)
 
-	fun concat(vertices: List<VertexDescriptor>) =
-			vertex(vertices, graphVertex = MergeVertex())
+	fun concat(vertices: List<VertexDescriptor>, name: String? = null) =
+			vertex(vertices, name, MergeVertex())
 
 	fun VertexDescriptor.duplicate() =
 			layer(this, layer = IdentityLayer())
