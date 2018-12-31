@@ -76,10 +76,13 @@ class ComputationGraphConf {
 		baseLayerConfig = BaseLayerConf().apply(init)
 	}
 
-	fun vertex(vararg inputs: VertexDescriptor, name: String? = null, graphVertex: GraphVertex): VertexDescriptor =
+	fun vertex(inputs: List<VertexDescriptor>, name: String? = null, graphVertex: GraphVertex): VertexDescriptor =
 			VertexDescriptor(name.orRandomName()).also { vertex ->
-				vertices += vertex to VertexWithInputs(inputs.toList(), graphVertex)
+				vertices += vertex to VertexWithInputs(inputs, graphVertex)
 			}
+
+	fun vertex(vararg inputs: VertexDescriptor, name: String? = null, graphVertex: GraphVertex): VertexDescriptor =
+			vertex(inputs.toList(), name, graphVertex)
 
 	fun layer(vararg inputs: VertexDescriptor, inputPreProcessor: InputPreProcessor? = null, layer: Layer): VertexDescriptor =
 			vertex(*inputs, name = layer.layerName, graphVertex = LayerVertex(defaultConfigBuilder.clone().layer(layer).build(), inputPreProcessor))
@@ -110,13 +113,22 @@ class ComputationGraphConf {
 			vertex(this, other.duplicateIfEqualTo(this), graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Product))
 
 	fun average(vararg vertices: VertexDescriptor) =
-			vertex(*vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Average))
+			average(vertices.toList())
+
+	fun average(vertices: List<VertexDescriptor>) =
+			vertex(vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Average))
 
 	fun max(vararg vertices: VertexDescriptor) =
-			vertex(*vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Max))
+			max(vertices.toList())
+
+	fun max(vertices: List<VertexDescriptor>) =
+			vertex(vertices, graphVertex = ElementWiseVertex(ElementWiseVertex.Op.Max))
 
 	fun concat(vararg vertices: VertexDescriptor) =
-			vertex(*vertices, graphVertex = MergeVertex())
+			concat(vertices.toList())
+
+	fun concat(vertices: List<VertexDescriptor>) =
+			vertex(vertices, graphVertex = MergeVertex())
 
 	fun VertexDescriptor.duplicate() =
 			layer(this, layer = IdentityLayer())
