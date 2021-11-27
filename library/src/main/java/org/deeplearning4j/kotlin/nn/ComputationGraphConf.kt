@@ -60,6 +60,12 @@ class ComputationGraphConf {
 			})
 		}
 
+	var validateTbpttConfig: Boolean
+		get() = builder.isValidateTbpttConfig
+		set(value) {
+			builder.validateTbpttConfig(value)
+		}
+
 	var validateOutputConfig: Boolean
 		get() = builder.isValidateOutputConfig
 		set(value) {

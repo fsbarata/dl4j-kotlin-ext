@@ -5,9 +5,9 @@ import org.nd4j.linalg.indexing.BooleanIndexing
 import org.nd4j.linalg.indexing.conditions.GreaterThan
 import org.nd4j.linalg.indexing.conditions.LessThan
 
-fun INDArray.coerceAtMost(maxValue: Double) = dup().also { BooleanIndexing.applyWhere(it, GreaterThan(maxValue), maxValue) }
-fun INDArray.coerceAtLeast(minValue: Double) = dup().also { BooleanIndexing.applyWhere(it, LessThan(minValue), minValue) }
+fun INDArray.coerceAtMost(maxValue: Double) = dup().also { BooleanIndexing.replaceWhere(it, maxValue, GreaterThan(maxValue)) }
+fun INDArray.coerceAtLeast(minValue: Double) = dup().also { BooleanIndexing.replaceWhere(it, minValue, LessThan(minValue)) }
 fun INDArray.coerceIn(minValue: Double, maxValue: Double) = dup().also {
-	BooleanIndexing.applyWhere(it, LessThan(minValue), minValue)
-	BooleanIndexing.applyWhere(it, GreaterThan(maxValue), maxValue)
+	BooleanIndexing.replaceWhere(it, minValue, LessThan(minValue))
+	BooleanIndexing.replaceWhere(it, maxValue, GreaterThan(maxValue))
 }

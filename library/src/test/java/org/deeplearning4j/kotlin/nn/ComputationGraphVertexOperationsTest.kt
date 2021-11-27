@@ -6,7 +6,6 @@ import org.deeplearning4j.kotlin.graph
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.graph.ComputationGraph
 import org.deeplearning4j.nn.weights.WeightInit
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.nd4j.linalg.activations.Activation
 import org.nd4j.linalg.factory.Nd4j
@@ -42,13 +41,13 @@ class ComputationGraphVertexOperationsTest {
 			val input2 = inputVertex()
 
 			val layerOne = denseLayer(input) {
-				weightInit = WeightInit.IDENTITY
+				weightInitFunction = WeightInit.IDENTITY.weightInitFunction
 				nIn = 3
 				nOut = 3
 			}
 
 			val layerTwo = denseLayer(input2) {
-				weightInit = WeightInit.ONES
+				weightInitFunction = WeightInit.ONES.weightInitFunction
 				nIn = 2
 				nOut = 1
 			}
@@ -116,7 +115,7 @@ class ComputationGraphVertexOperationsTest {
 
 			baseLayerConfig {
 				activation = Activation.IDENTITY.activationFunction
-				dist = DIST
+				weightInitFunction = WeightInit.XAVIER.getWeightInitFunction(DIST)
 			}
 
 			lossLayer(buildGraph()) {
@@ -130,13 +129,13 @@ class ComputationGraphVertexOperationsTest {
 					val input2 = inputVertex()
 
 					val layerOne = denseLayer(input) {
-						weightInit = WeightInit.IDENTITY
+						weightInitFunction = WeightInit.IDENTITY.weightInitFunction
 						nIn = 3
 						nOut = 3
 					}
 
 					val layerTwo = denseLayer(input2) {
-						weightInit = WeightInit.ONES
+						weightInitFunction = WeightInit.ONES.weightInitFunction
 						nIn = 2
 						nOut = 3
 					}
@@ -145,7 +144,7 @@ class ComputationGraphVertexOperationsTest {
 				}
 
 		private fun ComputationGraph.assertOutput(expectedOutput: DoubleArray, input1: DoubleArray, input2: DoubleArray) {
-			outputSingle(Nd4j.create(input1), Nd4j.create(input2)).assertEquals(expectedOutput)
+			outputSingle(Nd4j.create(arrayOf(input1)), Nd4j.create(arrayOf(input2))).assertEquals(expectedOutput)
 		}
 	}
 }

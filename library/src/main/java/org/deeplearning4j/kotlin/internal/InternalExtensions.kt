@@ -9,45 +9,49 @@ import org.deeplearning4j.nn.conf.layers.FeedForwardLayer
 
 
 internal fun <T : BaseOutputLayer.Builder<T>> ILossLayerConf.applyTo(builder: T) {
-	builder.lossFunction(lossFunction)
+    builder.lossFunction(lossFunction)
 }
 
 internal fun <T : FeedForwardLayer.Builder<T>> IFeedForwardLayerConf.applyTo(builder: T) {
-	builder.nIn(nIn)
-	builder.nOut(nOut)
+    builder.nIn(nIn)
+    builder.nOut(nOut)
 }
 
 internal fun <T : BaseLayer.Builder<T>> IBaseLayerConf.applyTo(builder: T) {
-	builder.activation(activation)
-	builder.weightInit(weightInit)
-	builder.biasInit(biasInit)
-	builder.dist(dist)
-	builder.dropOut(dropOut)
-	builder.weightNoise(weightNoise)
-	builder.updater(updater)
-	builder.biasUpdater(biasUpdater)
-	builder.gradientNormalization(gradientNormalization)
-	builder.gradientNormalizationThreshold(gradientNormalizationThreshold)
-	builder.l1(l1Weights)
-	builder.l1Bias(l1Bias)
-	builder.l2(l2Weights)
-	builder.l2Bias(l2Bias)
+    builder.activation(activation)
+    builder.weightInit(weightInitFunction)
+    builder.biasInit(biasInit)
+    builder.dropOut(dropOut)
+    builder.weightNoise(weightNoise)
+    builder.updater(updater)
+    builder.biasUpdater(biasUpdater)
+    builder.gradientNormalization(gradientNormalization)
+    builder.gradientNormalizationThreshold(gradientNormalizationThreshold)
+    l1?.let {
+        builder.l1(it.weight)
+        builder.l1Bias(it.bias)
+    }
+    l2?.let {
+        builder.l2(it.weight)
+        builder.l2Bias(it.bias)
+    }
+    builder.regularization.addAll(regularizations)
+    builder.regularizationBias.addAll(regularizationBiases)
 }
 
 internal fun IBaseLayerConf.copyTo(baseLayerConf: IBaseLayerConf) {
-	baseLayerConf.name = name
-	baseLayerConf.activation = activation
-	baseLayerConf.weightInit = weightInit
-	baseLayerConf.biasInit = biasInit
-	baseLayerConf.dist = dist
-	baseLayerConf.dropOut = dropOut
-	baseLayerConf.weightNoise = weightNoise
-	baseLayerConf.updater = updater
-	baseLayerConf.biasUpdater = biasUpdater
-	baseLayerConf.gradientNormalization = gradientNormalization
-	baseLayerConf.gradientNormalizationThreshold = gradientNormalizationThreshold
-	baseLayerConf.l1Weights = l1Weights
-	baseLayerConf.l1Bias = l1Bias
-	baseLayerConf.l2Weights = l2Weights
-	baseLayerConf.l2Bias = l2Bias
+    baseLayerConf.name = name
+    baseLayerConf.activation = activation
+    baseLayerConf.weightInitFunction = weightInitFunction
+    baseLayerConf.biasInit = biasInit
+    baseLayerConf.dropOut = dropOut
+    baseLayerConf.weightNoise = weightNoise
+    baseLayerConf.updater = updater
+    baseLayerConf.biasUpdater = biasUpdater
+    baseLayerConf.gradientNormalization = gradientNormalization
+    baseLayerConf.gradientNormalizationThreshold = gradientNormalizationThreshold
+    baseLayerConf.l1 = l1
+    baseLayerConf.l2 = l2
+    baseLayerConf.regularizations = regularizations
+    baseLayerConf.regularizationBiases = regularizationBiases
 }

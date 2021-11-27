@@ -8,12 +8,13 @@ import org.deeplearning4j.nn.conf.layers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.nd4j.linalg.api.buffer.DataType
 import org.nd4j.linalg.lossfunctions.LossFunctions
 
 class NeuralNetworksTest {
 	@Test
 	fun multilayerNetwork_oneLayer_hasConfigurations() {
-		val network = multilayerNetwork {
+		val network = multilayerNetwork(DataType.FLOAT) {
 			defaultConfig {
 				miniBatch = true
 				optimizationAlgo = OPTIMIZATION_ALGORITHM
@@ -39,7 +40,7 @@ class NeuralNetworksTest {
 
 	@Test
 	fun multilayerNetwork_multipleLayer_withBaseConfiguration_isCorrect() {
-		val network = multilayerNetwork {
+		val network = multilayerNetwork(DataType.FLOAT) {
 			defaultConfig {
 				optimizationAlgo = OPTIMIZATION_ALGORITHM
 			}

@@ -83,7 +83,7 @@ class LayersTest {
 	}
 
 	companion object {
-		const val INPUT_NODES = 4
-		const val OUTPUT_NODES = 5
+		const val INPUT_NODES = 4L
+		const val OUTPUT_NODES = 5L
 	}
 }
