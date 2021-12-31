@@ -10,7 +10,7 @@ import org.nd4j.linalg.learning.regularization.Regularization
 
 interface IBaseLayerConf {
     var name: String?
-    var activation: IActivation
+    var activation: IActivation?
     var weightInitFunction: IWeightInit
     var biasInit: Double
     var dropOut: IDropout?

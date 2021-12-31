@@ -8,6 +8,7 @@ import org.deeplearning4j.nn.conf.layers.Layer
 import org.deeplearning4j.nn.weights.IWeightInit
 import org.deeplearning4j.nn.weights.WeightInit
 import org.nd4j.linalg.activations.Activation
+import org.nd4j.linalg.activations.IActivation
 import org.nd4j.linalg.learning.config.NoOp
 
 internal class BaseLayerConf : IBaseLayerConf {
@@ -41,7 +42,7 @@ internal class BaseLayerConf : IBaseLayerConf {
 private val initialValues = BaseLayerBuilderProxy()
 
 private class BaseLayerBuilderProxy : BaseLayer.Builder<BaseLayerBuilderProxy>() {
-    val activation = super.activationFn ?: Activation.RELU.activationFunction
+    val activation = super.activationFn
 
     val weightInitialization: IWeightInit = super.weightInitFn ?: WeightInit.XAVIER.weightInitFunction
 
